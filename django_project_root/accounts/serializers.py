@@ -4,7 +4,8 @@ from django.contrib.auth import get_user_model
 
 from dj_rest_auth.registration.serializers import RegisterSerializer
 
-from dj_rest_auth.serializers import api_settings
+#from dj_rest_auth.serializers import api_settings
+from dj_rest_auth.serializers import UserDetailsSerializer
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -32,13 +33,14 @@ class CustomRegisterSerializer(RegisterSerializer):
         return user
 
 # custom serializer expanding USER_DETAILS_SERIALIZER with extra field 'user_type' of: admin, visitor, marketer   
-BaseUserSerializer = api_settings.USER_DETAILS_SERIALIZER
+#BaseUserSerializer = api_settings.USER_DETAILS_SERIALIZER
     
-class CustomUserDetailsSerializer(BaseUserSerializer):
+class CustomUserDetailsSerializer(UserDetailsSerializer):
     user_type = serializers.SerializerMethodField()
 
-    class Meta(BaseUserSerializer.Meta):
-        fields = BaseUserSerializer.Meta.fields + ("user_type",)
+    class Meta(UserDetailsSerializer.Meta):
+        #fields = BaseUserSerializer.Meta.fields + ("user_type",)
+        fields = UserDetailsSerializer.Meta.fields + ("user_type",)
 
     def get_user_type(self, user):
         if user.is_superuser:

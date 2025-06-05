@@ -16,34 +16,40 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 # Swagger related imports of urls and views
-from rest_framework.permissions import IsAdminUser
-from dj_rest_auth.registration.views import RegisterView
-from dj_rest_auth.views import LoginView, LogoutView
-from mobiles.urls import urlpatterns as mobiles_urls
-from reviews.urls import urlpatterns as reviews_urls
-from marketers.urls import urlpatterns as marketers_urls
+# from rest_framework.permissions import IsAdminUser
+# from dj_rest_auth.registration.views import RegisterView
+# from dj_rest_auth.views import LoginView, LogoutView
+# from mobiles.urls import urlpatterns as mobiles_urls
+from rest_framework import permissions
+# from reviews.urls import urlpatterns as reviews_urls
+# from marketers.urls import urlpatterns as marketers_urls
 
 
-# Setup schema view for Swagger. Only logged in admin user has access.
+# Setup schema view for Swagger. Only logged in admin user has access. 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Reviewer project API",
+        title="Reviewer API Documentation",
         default_version='v1',
         description="API documentation for Reviewer project",
-        #terms_of_service="https://www.yourapi.com/terms/",
+        terms_of_service="https://www.yourapi.com/terms/", # this exists
+        contact=openapi.Contact(email="amonline0707@yahoo.com"),
+        license=openapi.License(name="MIT License"),
     ),
-    public=False,
-    permission_classes=(IsAdminUser,),
-    # selected patterns and views for Swagger only
-    patterns=mobiles_urls + reviews_urls + marketers_urls +
-        [path('users/registration/', RegisterView.as_view(), name='rest_register'),
-         path('users/login/', LoginView.as_view(), name='rest_login'),
-         path('users/logout/', LogoutView.as_view(), name='rest_logout')
-         ]
+    # public=False,
+    # permission_classes=(IsAdminUser,), 
+    public=True,  # Make the Swagger UI publicly accessible
+    permission_classes=(permissions.AllowAny,),  # Allow any user to access the docs
+
+
+#     # selected patterns and views for Swagger only
+#     patterns=mobiles_urls + reviews_urls + marketers_urls +
+#         [path('users/registration/', RegisterView.as_view(), name='rest_register'),
+#          path('users/login/', LoginView.as_view(), name='rest_login'),
+#          path('users/logout/', LogoutView.as_view(), name='rest_logout')
+#          ]
 )
 
 # Project urls
@@ -54,5 +60,5 @@ urlpatterns = [
     path("api/", include("mobiles.urls")),
     path("api/", include("reviews.urls")),
     path("api/", include("marketers.urls")),
-    path('api/', include('contacts.urls')), 
+    path('api/', include('contacts.urls')),
 ]

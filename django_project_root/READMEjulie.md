@@ -44,3 +44,15 @@ User Login: POST /api/accounts/users/login/
 
 curl -X POST -H "Content-Type: application/json" -d '{"username":"testuser", "password":"password123"}' http://127.0.0.1:8000/api/accounts/users/login/
 ```
+
+
+### Run this code according to the assigned Database (as of now)
+
+At settings.py, if database is set to sqlite3, run this way: goto Terminal, make sure you are at the manage.py folder level, source .venv/bin/activate, then --->
+```
+python manage.py runserver 8080
+```
+if not, run this way:
+```
+docker-compose up --build
+```

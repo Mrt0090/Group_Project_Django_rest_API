@@ -16,6 +16,9 @@ RUN pip install -r requirements.txt
 # Copy the entire project to the container
 COPY . . 
 
+COPY .env .
+
+
 # Collect static files for production
 RUN python manage.py collectstatic --noinput
 
@@ -27,3 +30,5 @@ EXPOSE 8000
 
 # Default command is overridden in docker-compose
 CMD ["gunicorn", "--workers", "3", "--bind", "0.0.0.0:8000", "django_project.wsgi:application"]
+
+

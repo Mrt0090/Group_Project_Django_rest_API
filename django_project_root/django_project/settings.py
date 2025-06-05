@@ -106,26 +106,26 @@ WSGI_APPLICATION = 'django_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# os.getenv() retrieves value from environment variable, else uses default value
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DATABASE_NAME', 'postgres_db'),
-        'USER': os.getenv('DATABASE_USER', 'postgres_user'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD', ''),
-        'HOST': os.getenv('DATABASE_HOST', 'postgres_service'),  # Uses service name
-        'PORT': os.getenv('DATABASE_PORT', '5432'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
-# Password validation
+# os.getenv() retrieves value from environment variable, else uses default value
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('DATABASE_NAME', 'postgres_db'),
+#         'USER': os.getenv('DATABASE_USER', 'postgres_user'),
+#         'PASSWORD': os.getenv('DATABASE_PASSWORD', ''),
+#         'HOST': os.getenv('DATABASE_HOST', 'postgres_service'),  # Uses service name
+#         'PORT': os.getenv('DATABASE_PORT', '5432'),
+#     }
+# }
+
+# # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -162,6 +162,18 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# STATIC_URL = 'staticfiles/'
+
+# # Only needed if you're in a production-like environment or using Docker
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
+# # Add this for local development
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+
+
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -185,21 +197,30 @@ REST_FRAMEWORK = {
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # django-allauth settings
-# ACCOUNT_AUTHENTICATION_METHOD = "username"
-# ACCOUNT_LOGIN_METHODS = {"username"}
-# ACCOUNT_EMAIL_REQUIRED = False
-# ACCOUNT_USERNAME_REQUIRED = True
-# ACCOUNT_EMAIL_VERIFICATION = "optional"
+ACCOUNT_AUTHENTICATION_METHOD = "username"
+ACCOUNT_LOGIN_METHODS = {"username"}
+ACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "optional"
 
 # Required for django-allauth
 SITE_ID = 1
 
 
+
 # Custom serializer for default RegisterView (user self-registration API endpoint (ie. signup))
 REST_AUTH = {
-    'REGISTER_SERIALIZER': 
-        'accounts.serializers.CustomRegisterSerializer',
+    'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer',
+    'USER_DETAILS_SERIALIZER': 'accounts.serializers.CustomUserDetailsSerializer',
+    'SIGNUP_FIELDS': {
+        'username': {'required': True},
+        'email': {'required': False},  # Optional since you disabled email in serializer
+        'password1': {'required': True},
+        'password2': {'required': True},
+        'is_marketer': {'required': False},
+    }
 }
+
 
 # Custom settings for Swagger (keeps read only mode: 'Try it out' option removed)
 SWAGGER_SETTINGS = {
@@ -215,3 +236,7 @@ EMAIL_PORT = config("EMAIL_PORT", cast=int)
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
 EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+
+
+X_FRAME_OPTIONS = 'ALLOWALL'
+

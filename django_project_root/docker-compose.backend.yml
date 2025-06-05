@@ -1,19 +1,22 @@
-# version: '3.10'
+# version: "3.10"
 
 services:
-  # based on current Dockerfile image which contains: djago application, preinstalled gunicorn.
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile  # Ensure you have a Dockerfile for Django
     container_name: django_app
     restart: always
     command: >
       sh -c "python manage.py migrate &&
-             gunicorn --workers 3 --bind 0.0.0.0:8080 django_project.wsgi:application"
+             gunicorn --workers 3 --bind 0.0.0.0:8000 django_project.wsgi:application"
     volumes:
       - .:/usr/src/app
       - static_volume_live:/usr/src/app/staticfiles
-    # map container port to host machine port
+      # - ./staticfiles:/usr/src/app/staticfiles/drf-yasg
+
     ports:
+      # - "8080:8000"
       - "8080:8080"
     depends_on:
       - postgres_service
@@ -23,14 +26,11 @@ services:
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_HOST=${DATABASE_HOST}
       - DATABASE_PORT=${DATABASE_PORT}
-
     networks:
       - app-network_live
 
-  # based on postgres image
-  # with the start of container ie. service, the below DB will be created
   postgres_service:
-    image: postgres:latest
+    image: postgres:15
     container_name: backend
     restart: always
     environment:
@@ -48,5 +48,4 @@ volumes:
 
 networks:
   app-network_live:
-    name: app-network_live
-    driver: bridge
+    external: true
