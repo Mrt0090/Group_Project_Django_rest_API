@@ -1,23 +1,90 @@
-Modifications from Julie:
+# GROUP_PROJECT_DJANGO_REST_API
 
-mobiles/models.py
+This project is a **Django REST Framework (DRF)**-based API built collaboratively as a group project. It provides RESTful endpoints for managing and accessing data in a scalable and secure manner. 
 
-added:
+## Description:
+The project is a product review project which enables a user to either review, market or list reviews. 
 
-```
-def __str__(self):
+---
 
-        return f"{self.brand} {self.model}"
-```
+## Goal
 
-reviews.py/models.py
+The goal of this project is to empower a user with the knowledge of which product, e.g mobile, to buy for a specific purpose or need.
+
+---
+
+## 🚀 Features
+
+- Built with Django and Django REST Framework
+- Modular and scalable project structure
+- Token-based authentication 
+- CRUD operations for core resources
+- Pagination, filtering, and search support 
+- Swagger or ReDoc API documentation
+- PostgreSQL or SQLite database support 
+
+---
+
+## 🛠 Tech Stack
+
+- **Backend**: Django, Django REST Framework
+- **Database**: PostgreSQL / SQLite (set as needed at the settings.py)
+- **Authentication**: DRF TokenAuthentication 
+- **Documentation**: Swagger / ReDoc (via `drf-yasg`)
+
+---
+
+## 📁 Project Structure
+
+GROUP_PROJECT_DJANGO_REST_API/django_project_root/
+
+├── django_project/ # Django project settings
+
+├── app_name/ # Core Django apps: accounts, contacts, marketers, mobiles
+
+│ ├── models.py
+
+│ ├── serializers.py
+
+│ ├── views.py
+
+│ ├── urls.py
+
+│ └── tests.py
+
+├── manage.py
+
+├── requirements.txt
+
+└── README.md
 
 
-```def __str__(self):
-        return f"Review by {self.author} on {self.phone}"
+---
+
+## 📦 Installation & Running Locally
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/en/) (v14 or higher)
+- Angular CLI (`npm install -g @angular/cli`)
+
+### Steps
+
+```bash
+# Clone the repository
+git clone https://github.com/Mrt0090/Group_Project_Django_rest_API.git
+
+cd Group_Project_Django_rest_API
+
+# Install dependencies
+npm install
+
+# Run in development mode
+ng serve --open
 ```
 
 ## Test Authentication Endpoints
+
 Now you can test the following API endpoints:
 
 User Login: POST /api/accounts/users/login/
@@ -44,7 +111,27 @@ User Login: POST /api/accounts/users/login/
 
 curl -X POST -H "Content-Type: application/json" -d '{"username":"testuser", "password":"password123"}' http://127.0.0.1:8000/api/accounts/users/login/
 ```
+📄 API Documentation
+Swagger UI: http://localhost:8000/swagger/
 
+ReDoc: http://localhost:8000/redoc/
+
+Generated using drf-yasg 
+
+✅ Running Tests
+
+```
+python manage.py test
+```
+👥 Contributors
++ Nkemdilim Julie Chime
++ Taras Bilan
+
+
+
+
+📝 License
+This project is licensed under the MIT License. 
 
 ### Run this code according to the assigned Database (as of now)
 
